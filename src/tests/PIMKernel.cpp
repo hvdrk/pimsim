@@ -763,9 +763,9 @@ void PIMKernel::executeJoinBench(int dim0, int dim1, pimBankType pb_type, Kernel
     int is_uniform_part1 = 0;
     int is_uniform_part2 = 0;
     int is_uniform_part3 = 0;
-    double bias_part1 = 1/16;
-    double bias_part2 = 1/16;
-    double bias_part3 = 1/16;
+    double bias_part1 = 15/16;
+    double bias_part2 = 15/16;
+    double bias_part3 = 15/16;
 
 
     std::vector<int> tuples1;
