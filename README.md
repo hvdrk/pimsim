@@ -1,6 +1,7 @@
+To simulate,
 
-use 
-
+'''
+python ./data/join/gen_join.py
 ./sim --gtest_filter=PIMBenchFixture.join
+'''
 
-to simulate
