@@ -1,27 +1,31 @@
 import numpy as np
+import sys
 
-# inner_size = 64     # within data type range. uint64 : under 2^64. must 64 * n
-# outer_size = 64
+if len(sys.argv) != 2:
+    print("Usage: python gen.py <row_size>")
+    sys.exit(1)
 
-row_size = 512
+try:
+    row_size = int(sys.argv[1])
+except ValueError:
+    print("row_size must be an integer")
+    sys.exit(1)
 
-inner_size = 128*16*row_size  #  (# of tuples per row) * (# of banks) * (# of rows - max:4k)
-outer_size = 128*16*row_size 
+inner_size = 128 * 16 * row_size
+outer_size = 128 * 16 * row_size
 
-# data_type = np.uint64
 data_type = np.uint32
 
-k1 = np.random.permutation(inner_size).astype(data_type)                    # 0 ~ n-1 without overlap
-v1 = np.random.randint(0, 64, size=inner_size, dtype=data_type)             # 0 ~ 63
+k1 = np.random.permutation(inner_size).astype(data_type)  # 0 ~ n-1 without overlap
+v1 = np.random.randint(0, 64, size=inner_size, dtype=data_type)
 inner_rel = np.array([[k, v] for k, v in zip(k1, v1)], dtype=data_type)
 np.save("inner", inner_rel)
 
 print(f"inner_rel : (shape: {inner_rel.shape}):")
 print(inner_rel)
 
-# k2 = np.random.randint(0, inner_size, size=outer_size, dtype=data_type)     # 0 ~ n-1 with overlap
-k2 = np.random.choice(k1, size=outer_size, replace=False)                   # 0 ~ n-1 without overlap
-v2 = np.random.randint(0, 64, size=outer_size, dtype=data_type)             # 0 ~ 63
+k2 = np.random.choice(k1, size=outer_size, replace=False)  # 0 ~ n-1 without overlap
+v2 = np.random.randint(0, 64, size=outer_size, dtype=data_type)
 outer_rel = np.array([[k, v] for k, v in zip(k2, v2)], dtype=data_type)
 np.save("outer", outer_rel)
 
